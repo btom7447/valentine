@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* html,
+body {
+  background: #ffffff;
+  background-image: 
+    linear-gradient(90deg, transparent 50px, #ffb4b8 50px, #ffb4b8 52px, transparent 52px),
+    linear-gradient(#e1e1e1 0.1em, transparent 0.1em);
+  background-size: 100% 30px;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+  --bg: radial-gradient(#000 5%, #0000 6%);
+  --size: 3rem;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#000 5%, #0000 6%),
+    radial-gradient(#000 5%, #0000 6%);
+  background-position: 0 0, calc(var(--size) / 2) calc(var(--size) / 2);
+  background-size: var(--size) var(--size);
+} */

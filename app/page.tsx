@@ -1,27 +1,36 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import FirstScreen from "./components/FirstScreen";
+import SecondScreen from "./components/SecondScreen";
+import MessageScreen from "./components/MessageScreen";
+import MemoryScreen from "./components/MemoryScreen";
+
+gsap.registerPlugin(ScrollToPlugin);
 
 export default function Home() {
-  return (
-    <main className="min-h-screen flex items-center justify-center bg-pink-50 overflow-hidden">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 1.2,
-          ease: "easeOut",
-        }}
-        className="text-center"
-      >
-        <h1 className="text-4xl md:text-6xl font-bold text-pink-600">
-          Hey You ❤️
-        </h1>
+  const secondScreenRef = useRef<HTMLElement | null>(null);
+  const messageScreenRef = useRef<HTMLElement | null>(null);
+  const memoryScreenRef = useRef<HTMLElement | null>(null);
 
-        <p className="mt-4 text-lg text-pink-400">
-          I made something special for you…
-        </p>
-      </motion.div>
-    </main>
+  const handleYesClick = () => {
+    if (!secondScreenRef.current) return;
+
+    gsap.to(window, {
+      scrollTo: secondScreenRef.current,
+      duration: 1.6,
+      ease: "power3.inOut",
+    });
+  };
+
+  return (
+    <div className="overflow-x-hidden">
+      <FirstScreen onYesClick={handleYesClick} />
+      <SecondScreen ref={secondScreenRef} />
+      <MessageScreen ref={messageScreenRef} />
+      <MemoryScreen ref={memoryScreenRef} />
+    </div>
   );
-};
+}
