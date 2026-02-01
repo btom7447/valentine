@@ -117,11 +117,11 @@ I just wanted to say… I really like you. 🌹`;
   return (
     <section
       ref={ref}
-      className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-600 via-gray-500 to-gray-400 overflow-hidden px-4"
+      className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-600 via-gray-500 to-gray-400 overflow-hidden px-5"
     >
       {/* Envelope */}
       <div
-        className="relative w-[520px] h-96"
+        className="relative w-full max-w-[500px] h-80"
         ref={envelopeRef}
         style={{ perspective: 1200 }}
       >
@@ -137,7 +137,7 @@ I just wanted to say… I really like you. 🌹`;
       {/* Letter */}
       <div
         ref={letterRef}
-        className="absolute w-[500px] h-[360px] bg-red-100 rounded-lg p-6 shadow-lg opacity-0 z-20"
+        className="absolute mx-5 max-w-[450px] h-[360px] bg-red-100 rounded-lg p-6 shadow-lg opacity-0 z-20"
         style={{ bottom: "calc(50% - 180px)" }}
       >
         <p
