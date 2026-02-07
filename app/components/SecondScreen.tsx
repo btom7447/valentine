@@ -2,9 +2,11 @@
 
 import "../styles/secondScreen.css";
 import { motion } from "framer-motion";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 
 const SecondScreen = forwardRef<HTMLElement>(function SecondScreen(_, ref) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   return (
     <section
       ref={ref}
@@ -17,29 +19,56 @@ const SecondScreen = forwardRef<HTMLElement>(function SecondScreen(_, ref) {
         viewport={{ once: true }}
         className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center text-white"
       >
-        <h2 className="mb-4 text-3xl md:text-5xl font-serif">
+        <motion.h2
+          initial={{ scale: 0.8 }}
+          whileInView={{ scale: 1 }}
+          transition={{ duration: 0.8, type: "spring" }}
+          className="mb-4 text-3xl md:text-5xl font-serif"
+        >
           A playlist made for us 💖
-        </h2>
+        </motion.h2>
 
-        <p className="mb-8 max-w-md text-white/80">
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="mb-8 max-w-md text-white/80 text-lg"
+        >
           Every song here reminds me of you — your smile, your laugh, us.
-        </p>
+        </motion.p>
 
-        {/* Spotify Embed */}
-        <div className="mb-8 w-full max-w-md rounded-lg border border-white">
+        {/* Spotify Embed with animation */}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          whileHover={{ scale: 1.02 }}
+          className="mb-8 w-full max-w-md rounded-lg border-2 border-white/30 shadow-2xl overflow-hidden backdrop-blur-sm bg-white/5"
+          onMouseEnter={() => setIsPlaying(true)}
+          onMouseLeave={() => setIsPlaying(false)}
+        >
           <iframe
             src="https://open.spotify.com/embed/playlist/6e7XWGv1HiNKjhzYWrkd2M?utm_source=generator&theme=0"
             width="100%"
-            height="152"
+            height="352"
             style={{ borderRadius: "12px" }}
             frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             allowFullScreen
             loading="lazy"
           />
-        </div>
+        </motion.div>
 
-      
+        {/* Additional message */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
+          className="text-white/70 italic max-w-lg"
+        >
+          "Music sounds better with you" isn't just a song title, it's the truth
+          🎧
+        </motion.p>
       </motion.div>
 
       {/* Decorative stars */}

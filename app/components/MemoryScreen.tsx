@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, forwardRef, useState } from "react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
@@ -13,6 +14,7 @@ interface MemoryScreenProps {
 const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
   function MemoryScreen({ photos = [] }, ref) {
     const containerRef = useRef<HTMLDivElement>(null);
+    const titleRef = useRef<HTMLHeadingElement>(null);
     const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
     // Positions stored in a ref to avoid re-renders
@@ -40,19 +42,34 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
     // Generate positions only once
     if (positionsRef.current.length === 0) {
       positionsRef.current = memoryPhotos.map(() => ({
-        left: gsap.utils.random(0, 80),
-        top: gsap.utils.random(0, 70),
+        left: gsap.utils.random(5, 75), // Keep away from edges
+        top: gsap.utils.random(5, 65),
         rotate: gsap.utils.random(-15, 15),
       }));
     }
 
     // Animate on mount
     useEffect(() => {
-      const cards =
-        containerRef.current?.querySelectorAll<HTMLDivElement>(".memory-card");
-      if (!cards) return;
-
       const ctx = gsap.context(() => {
+        // Title animation
+        gsap.from(titleRef.current, {
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 80%",
+          },
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        });
+
+        // Animate cards in
+        const cards =
+          containerRef.current?.querySelectorAll<HTMLDivElement>(
+            ".memory-card",
+          );
+        if (!cards) return;
+
         gsap.from(cards, {
           y: 50,
           opacity: 0,
@@ -66,13 +83,16 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
           },
         });
 
-        cards.forEach((card) => {
+        // Subtle floating animation for each card
+        cards.forEach((card, i) => {
           gsap.to(card, {
-            rotate: () => gsap.utils.random(-5, 5),
+            y: () => gsap.utils.random(-10, 10),
+            rotate: () => gsap.utils.random(-3, 3),
             duration: () => gsap.utils.random(3, 5),
             yoyo: true,
             repeat: -1,
             ease: "sine.inOut",
+            delay: i * 0.1,
           });
         });
       });
@@ -87,34 +107,44 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
       if (!cards) return;
 
       if (activeIdx === idx) {
+        // Close the active card
         setActiveIdx(null);
-        cards.forEach((card) => {
+        cards.forEach((card, i) => {
+          const pos = positionsRef.current[i];
           gsap.to(card, {
             scale: 1,
             zIndex: 1,
+            x: 0,
+            y: 0,
+            rotate: pos.rotate,
             filter: "blur(0px)",
             duration: 0.5,
+            ease: "power2.out",
           });
         });
       } else {
+        // Open clicked card
         setActiveIdx(idx);
         cards.forEach((card, i) => {
           if (i === idx) {
             gsap.to(card, {
-              scale: 1.5,
+              scale: 1.8,
               zIndex: 50,
               x: 0,
               y: 0,
               rotate: 0,
               filter: "blur(0px)",
               duration: 0.5,
+              ease: "back.out(1.2)",
             });
           } else {
             gsap.to(card, {
-              scale: 1,
+              scale: 0.9,
               zIndex: 1,
               filter: "blur(4px)",
+              opacity: 0.5,
               duration: 0.5,
+              ease: "power2.out",
             });
           }
         });
@@ -126,7 +156,6 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
       const handleClickOutside = (e: MouseEvent) => {
         if (!containerRef.current) return;
 
-        // Check if the click target is inside any memory-card
         const target = e.target as HTMLElement;
         if (!target.closest(".memory-card") && activeIdx !== null) {
           const cards =
@@ -142,7 +171,9 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
               y: 0,
               rotate: pos.rotate,
               filter: "blur(0px)",
+              opacity: 1,
               duration: 0.5,
+              ease: "power2.out",
             });
           });
           setActiveIdx(null);
@@ -150,51 +181,92 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
       };
 
       document.addEventListener("click", handleClickOutside);
-
       return () => document.removeEventListener("click", handleClickOutside);
     }, [activeIdx]);
 
     return (
       <section
         ref={ref}
-        className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-pink-200 via-rose-100 to-pink-50 px-6 py-16 overflow-hidden"
+        className="relative flex flex-col items-center justify-center min-h-screen bg-linear-to-br from-pink-50 via-rose-50 to-red-50 px-6 py-16 overflow-hidden"
       >
-        <h2 className="text-3xl md:text-5xl font-serif mb-12 text-rose-800">
-          Memories 💕
+        <h2
+          ref={titleRef}
+          className="text-4xl md:text-6xl font-bold text-center text-red-600 mb-12 z-10"
+        >
+          Our Beautiful Moments 💖
         </h2>
 
-        <div ref={containerRef} className="relative w-full h-[800px]">
+        {/* Scattered Polaroids Container */}
+        <div
+          ref={containerRef}
+          className="relative w-full min-w-screen max-w-7xl h-175 md:h-200"
+        >
           {memoryPhotos.map((photo, idx) => {
             const pos = positionsRef.current[idx];
 
             return (
               <div
                 key={idx}
-                className="memory-card absolute w-[160px] h-[180px] bg-white p-3 shadow-lg rounded-lg cursor-pointer"
+                className="memory-card absolute w-30 md:w-45 bg-white shadow-xl rounded-lg cursor-pointer hover:shadow-2xl transition-shadow"
                 style={{
                   left: `${pos.left}%`,
                   top: `${pos.top}%`,
                   transform: `rotate(${pos.rotate}deg)`,
                 }}
                 onClick={(e) => {
-                  e.stopPropagation(); // prevent container click from firing
+                  e.stopPropagation();
                   handleCardClick(idx);
                 }}
               >
-                <div className="w-full h-[140px] overflow-hidden rounded-lg">
+                {/* Polaroid image area */}
+                <div className="w-full h-30 md:h-40 overflow-hidden rounded-md bg-gray-100">
                   <img
                     src={photo.src}
                     alt={`Memory ${idx + 1}`}
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="mt-2 text-center text-sm text-gray-800 font-mono">
-                  {photo.date ?? `2025-01-${idx + 1}`}
+
+                {/* Polaroid date/caption */}
+                <div className="mt-2 md:mt-3 text-center text-xs md:text-sm text-gray-700 font-mono">
+                  {photo.date ??
+                    `2025-01-${(idx + 1).toString().padStart(2, "0")}`}
                 </div>
+
+                {/* Heart decoration (only show when not active) */}
+                {activeIdx !== idx && (
+                  <motion.div
+                    className="absolute top-0 right-0 text-2xl"
+                    initial={{ scale: 0, rotate: -45 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{
+                      delay: idx * 0.1,
+                      type: "spring",
+                      stiffness: 200,
+                    }}
+                  >
+                    ❤️
+                  </motion.div>
+                )}
               </div>
             );
           })}
         </div>
+
+        {/* Bottom message */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="mt-8 text-center z-10"
+        >
+          <p className="text-xl text-red-500 font-semibold">
+            And so many more to come... 💕
+          </p>
+          <p className="text-sm text-gray-600 mt-2">
+            Click any photo to see it up close
+          </p>
+        </motion.div>
       </section>
     );
   },

@@ -7,6 +7,8 @@ import FirstScreen from "./components/FirstScreen";
 import SecondScreen from "./components/SecondScreen";
 import MessageScreen from "./components/MessageScreen";
 import MemoryScreen from "./components/MemoryScreen";
+import CountdownScreen from "./components/CountdownScreen";
+import FinalScreen from "./components/FinalScreen";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -14,11 +16,13 @@ export default function Home() {
   const secondScreenRef = useRef<HTMLElement | null>(null);
   const messageScreenRef = useRef<HTMLElement | null>(null);
   const memoryScreenRef = useRef<HTMLElement | null>(null);
+  const countdownScreenRef = useRef<HTMLElement | null>(null);
+  const finalScreenRef = useRef<HTMLElement | null>(null);
 
   const handleYesClick = () => {
     if (!secondScreenRef.current) return;
 
-    gsap.to(window, {
+    gsap.to(Window, {
       scrollTo: secondScreenRef.current,
       duration: 1.6,
       ease: "power3.inOut",
@@ -31,6 +35,8 @@ export default function Home() {
       <SecondScreen ref={secondScreenRef} />
       <MessageScreen ref={messageScreenRef} />
       <MemoryScreen ref={memoryScreenRef} />
+      <CountdownScreen ref={countdownScreenRef} />
+      <FinalScreen ref={finalScreenRef} />
     </div>
   );
 }

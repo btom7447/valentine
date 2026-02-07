@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, forwardRef } from "react";
+import { useEffect, useRef, forwardRef, useCallback } from "react";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
@@ -19,109 +20,115 @@ Even your little quirks make me fall for you more.
 I love laughing with you, talking with you, just being with you.
 Every moment with you feels like my favorite song.
 I hope this letter makes you smile, just like you make me smile every day. 💖
-You’re my favorite thought, my safe place, my joy.
+You're my favorite thought, my safe place, my joy.
 I just wanted to say… I really like you. 🌹`;
+
+  // Memoize the animation setup
+  const setupAnimation = useCallback(() => {
+    if (!textRef.current) return;
+
+    // Prepare typewriter text, keeping spaces
+    const lines = messageText.split("\n");
+    textRef.current.innerHTML = lines
+      .map((line) => {
+        if (line.trim() === "") return "<br/>";
+        return Array.from(line)
+          .map((char) =>
+            char === " "
+              ? `<span class="char opacity-0 inline-block">&nbsp;</span>`
+              : `<span class="char opacity-0 inline-block">${char}</span>`,
+          )
+          .join("");
+      })
+      .join("<br/>");
+
+    const chars = textRef.current.querySelectorAll(".char");
+    if (!chars.length) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: envelopeRef.current,
+        start: "top 70%",
+        once: true, // Only trigger once for better performance
+      },
+    });
+
+    tl.from(envelopeRef.current, {
+      y: 60,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out",
+    })
+      .to(
+        envelopeRef.current,
+        {
+          y: "-=10",
+          duration: 0.5,
+          yoyo: true,
+          repeat: 1,
+          ease: "power1.inOut",
+        },
+        "-=0.5",
+      )
+      .to(flapRef.current, {
+        rotateX: -180,
+        transformOrigin: "top center",
+        duration: 1,
+        ease: "power2.inOut",
+      })
+      .fromTo(
+        letterRef.current,
+        { y: 0, opacity: 0 },
+        { y: -180, opacity: 1, duration: 1.2, ease: "power3.out" },
+        "-=0.5",
+      )
+      // Letter settles above envelope
+      .to(letterRef.current, {
+        y: -10,
+        duration: 1,
+        ease: "power2.inOut",
+        delay: 0.5,
+      })
+      // Typewriter animation
+      .to(
+        chars,
+        { opacity: 1, y: 0, duration: 0.05, stagger: 0.03, ease: "none" },
+        "-=0.5",
+      )
+      // Close flap
+      .to(flapRef.current, {
+        rotateX: 0,
+        duration: 0.8,
+        ease: "power2.inOut",
+      })
+      // Floating animation after typing
+      .call(() => {
+        gsap.to(letterRef.current, {
+          y: "-=10",
+          duration: 1.2,
+          yoyo: true,
+          repeat: -1,
+          ease: "sine.inOut",
+        });
+      });
+  }, [messageText]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      if (!textRef.current) return;
-
-      // Prepare typewriter text, keeping spaces
-      const lines = messageText.split("\n");
-      textRef.current.innerHTML = lines
-        .map((line) => {
-          if (line.trim() === "") return "<br/>";
-          return Array.from(line)
-            .map((char) =>
-              char === " "
-                ? `<span class="char opacity-0 inline-block">&nbsp;</span>`
-                : `<span class="char opacity-0 inline-block">${char}</span>`,
-            )
-            .join("");
-        })
-        .join("<br/>");
-
-      const chars = textRef.current.querySelectorAll(".char");
-      if (!chars.length) return;
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: envelopeRef.current,
-          start: "top 70%",
-        },
-      });
-
-      tl.from(envelopeRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      })
-        .to(
-          envelopeRef.current,
-          {
-            y: "-=10",
-            duration: 0.5,
-            yoyo: true,
-            repeat: 1,
-            ease: "power1.inOut",
-          },
-          "-=0.5",
-        )
-        .to(flapRef.current, {
-          rotateX: -180,
-          transformOrigin: "top center",
-          duration: 1,
-          ease: "power2.inOut",
-        })
-        .fromTo(
-          letterRef.current,
-          { y: 0, opacity: 0 },
-          { y: -180, opacity: 1, duration: 1.2, ease: "power3.out" },
-          "-=0.5",
-        )
-        // Letter settles above envelope
-        .to(letterRef.current, {
-          y: -10,
-          duration: 1,
-          ease: "power2.inOut",
-          delay: 0.5,
-        })
-        // Typewriter animation
-        .to(
-          chars,
-          { opacity: 1, y: 0, duration: 0.05, stagger: 0.03, ease: "none" },
-          "-=0.5",
-        )
-        // Close flap
-        .to(flapRef.current, {
-          rotateX: 0,
-          duration: 0.8,
-          ease: "power2.inOut",
-        })
-        // Floating animation after typing
-        .call(() => {
-          gsap.to(letterRef.current, {
-            y: "-=10",
-            duration: 1.2,
-            yoyo: true,
-            repeat: -1,
-            ease: "sine.inOut",
-          });
-        });
+      setupAnimation();
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [setupAnimation]);
 
   return (
     <section
       ref={ref}
-      className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-600 via-gray-500 to-gray-400 overflow-hidden px-5"
+      className="relative flex items-center justify-center min-h-screen bg-linear-to-b from-gray-600 via-gray-500 to-gray-400 overflow-hidden px-5"
     >
       {/* Envelope */}
       <div
-        className="relative w-full max-w-[500px] h-80"
+        className="relative w-full max-w-130 h-80"
         ref={envelopeRef}
         style={{ perspective: 1200 }}
       >
@@ -131,18 +138,23 @@ I just wanted to say… I really like you. 🌹`;
             className="absolute top-0 w-full h-1/2 bg-gray-200 origin-top transform"
             style={{ clipPath: "polygon(0 0, 50% 100%, 100% 0)" }}
           />
+
+          {/* Envelope seal/decoration */}
+          <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-red-400 rounded-full opacity-30 flex items-center justify-center">
+            <span className="text-white text-2xl">💕</span>
+          </div>
         </div>
       </div>
 
       {/* Letter */}
       <div
         ref={letterRef}
-        className="absolute mx-5 max-w-[450px] h-[360px] bg-red-100 rounded-lg p-6 shadow-lg opacity-0 z-20"
+        className="absolute mx-5 max-w-125.5 min-h-100 max-h-300 bg-red-100 rounded-lg p-6 shadow-2xl opacity-0 z-20 border-2 border-red-200"
         style={{ bottom: "calc(50% - 180px)" }}
       >
         <p
           ref={textRef}
-          className="text-gray-900 font-[Gloria Hallelujah] text-base md:text-lg leading-relaxed whitespace-pre-wrap"
+          className="text-gray-900 font-[Gloria_Hallelujah] text-base md:text-lg leading-relaxed whitespace-pre-wrap"
         />
       </div>
     </section>
