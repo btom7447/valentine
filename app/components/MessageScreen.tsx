@@ -21,7 +21,7 @@ I love laughing with you, talking with you, just being with you.
 Every moment with you feels like my favorite song.
 I hope this letter makes you smile, just like you make me smile every day. 💖
 You're my favorite thought, my safe place, my joy.
-I just wanted to say… I really like you. 🌹`;
+I just wanted to say… I really love you. 🌹`;
 
   // Memoize the animation setup
   const setupAnimation = useCallback(() => {
