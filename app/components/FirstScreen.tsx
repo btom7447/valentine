@@ -49,15 +49,18 @@ export default function FirstScreen({ onYesClick }: FirstScreenProps) {
   >([]);
   const [tooltipIndex, setTooltipIndex] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const fullText = "Ima, Will you be my Valentine? 💖";
 
   // Memoized click handler
   const handleNoClick = useCallback(() => {
+    if (typeof window === "undefined") return;
+
     // Add Yes button
     setYesButtons((prev) => {
       const newId = prev.length + 1;
-      const padding = 100; // Keep buttons away from edges
+      const padding = 100;
       const newBtn = {
         id: newId,
         x:
@@ -73,20 +76,24 @@ export default function FirstScreen({ onYesClick }: FirstScreenProps) {
     });
 
     setTooltip(true);
-
-    // Cycle tooltip message
     setTooltipIndex((prev) => Math.min(prev + 1, tooltipMessages.length - 1));
-
     setTimeout(() => setTooltip(false), 1500);
   }, []);
 
-  // Optimized Yes click with confetti
+  // Optimized Yes click with confetti - Fixed to prevent glitch
   const handleYesClickWithConfetti = useCallback(() => {
+    if (isScrolling) return; // Prevent multiple clicks
+
+    setIsScrolling(true);
     setShowConfetti(true);
+
+    // Wait for confetti animation, then scroll
     setTimeout(() => {
       onYesClick();
-    }, 500);
-  }, [onYesClick]);
+      // Reset scrolling state after navigation completes
+      setTimeout(() => setIsScrolling(false), 2000);
+    }, 800); // Increased delay for smoother transition
+  }, [onYesClick, isScrolling]);
 
   // Typewriter effect
   useEffect(() => {
@@ -99,8 +106,10 @@ export default function FirstScreen({ onYesClick }: FirstScreenProps) {
     return () => clearInterval(interval);
   }, []);
 
-  // Initialize decorative icons (optimized)
+  // Initialize decorative icons (optimized) - only on client
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const padding = 20;
     const iconElements = [...ICONS, ...ICONS].map((src) => {
       return {
@@ -212,12 +221,15 @@ export default function FirstScreen({ onYesClick }: FirstScreenProps) {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 300, damping: 15 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: isScrolling ? 1 : 1.1 }}
+          whileTap={{ scale: isScrolling ? 1 : 0.95 }}
           onClick={handleYesClickWithConfetti}
-          className="px-8 py-5 rounded-full bg-red-400 text-white font-semibold shadow-lg hover:shadow-xl transition-shadow relative z-10"
+          disabled={isScrolling}
+          className={`px-8 py-5 rounded-full bg-red-400 text-white font-semibold shadow-lg hover:shadow-xl transition-all relative z-10 ${
+            isScrolling ? "opacity-75 cursor-wait" : "cursor-pointer"
+          }`}
         >
-          Yes 💖
+          {isScrolling ? "💖" : "Yes 💖"}
         </motion.button>
 
         {/* No button wrapper */}
@@ -238,7 +250,7 @@ export default function FirstScreen({ onYesClick }: FirstScreenProps) {
                 initial={{ opacity: 0, y: 0, scale: 0.8 }}
                 animate={{ opacity: 1, y: 50, scale: 1 }}
                 exit={{ opacity: 0, y: 0, scale: 0.8 }}
-                className="absolute -bottom-14 left-1/2 transform -translate-x-1/2 text-red-500 font-bold bg-white px-4 py-2 rounded-lg shadow-md z-1000"
+                className="absolute -bottom-14 left-1/2 transform -translate-x-1/2 text-red-500 font-bold bg-white px-4 py-2 rounded-lg shadow-md z-[1000]"
                 style={{
                   width: "max-content",
                   minWidth: "160px",
@@ -258,10 +270,13 @@ export default function FirstScreen({ onYesClick }: FirstScreenProps) {
           key={btn.id}
           initial={{ x: 0, y: 0, scale: 0 }}
           animate={{ x: btn.x, y: btn.y, scale: 1 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: isScrolling ? 1 : 1.05 }}
+          whileTap={{ scale: isScrolling ? 1 : 0.95 }}
           onClick={handleYesClickWithConfetti}
-          className="px-8 py-4 rounded-full bg-red-400 text-white font-semibold shadow-lg hover:shadow-xl transition-shadow absolute z-10"
+          disabled={isScrolling}
+          className={`px-8 py-4 rounded-full bg-red-400 text-white font-semibold shadow-lg hover:shadow-xl transition-shadow absolute z-10 ${
+            isScrolling ? "opacity-75 cursor-wait" : "cursor-pointer"
+          }`}
         >
           Yes 💖
         </motion.button>

@@ -207,7 +207,7 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
             return (
               <div
                 key={idx}
-                className="memory-card absolute w-30 md:w-45 bg-white shadow-xl rounded-lg cursor-pointer hover:shadow-2xl transition-shadow"
+                className="memory-card absolute w-30 md:w-50 bg-white shadow-xl rounded-lg cursor-pointer hover:shadow-2xl transition-shadow"
                 style={{
                   left: `${pos.left}%`,
                   top: `${pos.top}%`,
@@ -219,7 +219,7 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
                 }}
               >
                 {/* Polaroid image area */}
-                <div className="w-full h-30 md:h-40 overflow-hidden rounded-md bg-gray-100">
+                <div className="w-full h-30 md:h-50 overflow-hidden rounded-md bg-gray-100">
                   <img
                     src={photo.src}
                     alt={`Memory ${idx + 1}`}

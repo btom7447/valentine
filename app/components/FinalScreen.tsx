@@ -18,7 +18,7 @@ const gifts: Gift[] = [
     title: "Dinner Date",
     emoji: "🍽️",
     content:
-      "I promise to always make you laugh, even on your toughest days. To listen when you need to talk, and to be your biggest cheerleader in everything you do.",
+      "A dinner reservation for you and me — just us, good food, and uninterrupted time together.",
     color: "from-pink-400 to-rose-500",
     ribbonColor: "bg-rose-600",
   },
@@ -27,7 +27,7 @@ const gifts: Gift[] = [
     title: "Movie Date",
     emoji: "🎞️",
     content:
-      "Let's explore the world together! From cozy coffee shops to grand adventures, every moment with you is a journey I want to take. Here's to all the places we'll go!",
+      "A movie ticket for a film of your choice, plus my full attention (even if I pretend to watch).",
     color: "from-red-400 to-pink-500",
     ribbonColor: "bg-pink-600",
   },
@@ -36,7 +36,7 @@ const gifts: Gift[] = [
     title: "Do I have to spell it out",
     emoji: "🌚",
     content:
-      "You deserve to be celebrated every single day, not just on special occasions. This is my reminder that you're amazing, beautiful, and loved beyond measure.",
+      "Let's just say… the lights will be low, and there won't be much talking. I'll let your imagination do the rest 😏",
     color: "from-rose-400 to-red-500",
     ribbonColor: "bg-red-600",
   },
@@ -45,7 +45,7 @@ const gifts: Gift[] = [
     title: "Tour of Uyo",
     emoji: "🚘",
     content:
-      "They say the best things in life are worth waiting for. I'm so glad I found you. Here's to us, to our story, and to all the beautiful chapters yet to come.",
+      "A full tour of Uyo with me driving and you riding shotgun — stops, laughs, and memories included.",
     color: "from-pink-500 to-rose-600",
     ribbonColor: "bg-rose-700",
   },
@@ -53,6 +53,12 @@ const gifts: Gift[] = [
 
 const FinalScreen = forwardRef<HTMLElement>(function FinalScreen(_, ref) {
   const [selectedGift, setSelectedGift] = useState<Gift | null>(null);
+
+  const handleBackToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Optional: Add a small delay then reload to reset everything
+    setTimeout(() => window.location.reload(), 100);
+  };
 
   const GiftBox = ({ gift, index }: { gift: Gift; index: number }) => (
     <motion.div
@@ -78,11 +84,11 @@ const FinalScreen = forwardRef<HTMLElement>(function FinalScreen(_, ref) {
       <div className="relative">
         {/* Box body */}
         <div
-          className={`w-full aspect-square bg-linear-to-br ${gift.color} rounded-2xl shadow-2xl relative overflow-hidden`}
+          className={`w-full aspect-square bg-gradient-to-br ${gift.color} rounded-2xl shadow-2xl relative overflow-hidden`}
         >
           {/* Shine effect */}
           <motion.div
-            className="absolute inset-0 bg-linear-to-br from-white/40 to-transparent"
+            className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent"
             animate={{
               x: ["-100%", "100%"],
             }}
@@ -141,35 +147,8 @@ const FinalScreen = forwardRef<HTMLElement>(function FinalScreen(_, ref) {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex flex-col items-center justify-center bg-linear-to-br from-pink-100 via-rose-100 to-red-100 overflow-hidden px-6 py-16"
+      className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-rose-100 to-red-100 overflow-hidden px-6 py-16"
     >
-      {/* Floating hearts background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-4xl opacity-20"
-            initial={{
-              x: `${Math.random() * 100}%`,
-              y: "120%",
-              rotate: Math.random() * 360,
-            }}
-            animate={{
-              y: "-20%",
-              rotate: Math.random() * 360 + 360,
-            }}
-            transition={{
-              duration: 15 + Math.random() * 10,
-              repeat: Infinity,
-              delay: Math.random() * 10,
-              ease: "linear",
-            }}
-          >
-            💝
-          </motion.div>
-        ))}
-      </div>
-
       <div className="relative z-10 w-full max-w-6xl">
         {/* Title */}
         <motion.div
@@ -194,7 +173,7 @@ const FinalScreen = forwardRef<HTMLElement>(function FinalScreen(_, ref) {
           ))}
         </div>
 
-        {/* Bottom message */}
+        {/* Bottom message - Improved */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -202,57 +181,74 @@ const FinalScreen = forwardRef<HTMLElement>(function FinalScreen(_, ref) {
           transition={{ delay: 1, duration: 0.8 }}
           className="text-center"
         >
-          <p className="text-2xl md:text-3xl text-red-600 font-bold mb-6">
-            So, what do you say? 💕
-          </p>
-          <p className="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
-            Let's make this Valentine's Day (and every day after) unforgettable
-            together.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="px-8 py-3 bg-red-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              Say Yes Again! 💖
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="px-8 py-3 bg-white text-red-500 border-2 border-red-500 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              Start Over 🔄
-            </motion.button>
-          </div>
-
-          {/* Heart beat */}
           <motion.div
             animate={{
-              scale: [1, 1.2, 1],
+              scale: [1, 1.05, 1],
             }}
             transition={{
-              duration: 1.5,
+              duration: 2,
               repeat: Infinity,
-              repeatType: "loop",
+              repeatType: "reverse",
             }}
-            className="mt-12 text-6xl"
+            className="mb-8"
           >
-            ❤️
+            <p className="text-3xl md:text-4xl font-bold text-red-600 mb-2">
+              You already said YES! 💕
+            </p>
+            <p className="text-xl text-gray-700">
+              Now let's make every moment count
+            </p>
           </motion.div>
 
-          <motion.p
+          {/* Back to top button */}
+          <motion.button
+            whileHover={{ scale: 1.05, y: -5 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleBackToTop}
+            className="group px-10 py-4 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full font-bold text-lg shadow-2xl hover:shadow-red-300 transition-all relative overflow-hidden"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              From the top?
+            </span>
+            {/* Shine effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              animate={{
+                x: ["-100%", "200%"],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                repeatDelay: 1,
+              }}
+            />
+          </motion.button>
+
+          {/* Final message */}
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 1.5, duration: 1 }}
-            className="mt-8 text-gray-600 italic"
+            className="mt-12"
           >
-            Made with all my love, just for you 💝
-          </motion.p>
+            <motion.div
+              animate={{
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "loop",
+              }}
+              className="text-6xl mb-4"
+            >
+              ❤️
+            </motion.div>
+            <p className="text-gray-600 italic text-lg">
+              Yours for as long as you want me 💝
+            </p>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -317,35 +313,12 @@ const FinalScreen = forwardRef<HTMLElement>(function FinalScreen(_, ref) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedGift(null)}
-                    className={`px-8 py-3 bg-linear-to-r ${selectedGift.color} text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all`}
+                    className={`px-8 py-3 bg-gradient-to-r ${selectedGift.color} text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all`}
                   >
                     Close 💕
                   </motion.button>
                 </div>
 
-                {/* Confetti effect */}
-                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl">
-                  {[...Array(20)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ y: -20, x: "50%", opacity: 1 }}
-                      animate={{
-                        y: "100%",
-                        x: `${50 + (Math.random() - 0.5) * 100}%`,
-                        opacity: 0,
-                        rotate: Math.random() * 360,
-                      }}
-                      transition={{
-                        duration: 2,
-                        delay: Math.random() * 0.5,
-                        ease: "easeOut",
-                      }}
-                      className="absolute text-2xl"
-                    >
-                      {["❤️", "💕", "💖", "🌹", "✨"][i % 5]}
-                    </motion.div>
-                  ))}
-                </div>
               </div>
             </motion.div>
           </>
