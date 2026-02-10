@@ -173,7 +173,7 @@ const CountdownScreen = forwardRef<HTMLElement>(
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-6xl font-bold text-white mb-4"
           >
-            Time Together ⏰
+            Every Moment With You
           </motion.h2>
 
           <motion.p
@@ -183,7 +183,7 @@ const CountdownScreen = forwardRef<HTMLElement>(
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl md:text-2xl text-white/90 mb-12"
           >
-            Every second with you is precious 💕
+            Each second has been worth it{" "}
           </motion.p>
 
           {/* Show timer when loaded */}
@@ -225,7 +225,7 @@ const CountdownScreen = forwardRef<HTMLElement>(
             transition={{ delay: 1, duration: 1 }}
             className="mt-12 text-xl md:text-2xl text-white font-semibold"
           >
-            ...and counting! 🌟
+            but who's counting 💕
           </motion.p>
         </div>
       </section>

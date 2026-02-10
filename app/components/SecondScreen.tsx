@@ -34,7 +34,7 @@ const SecondScreen = forwardRef<HTMLElement>(function SecondScreen(_, ref) {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="mb-8 max-w-md text-white/80 text-lg"
         >
-          Every song here reminds me of you — your smile, your laugh, us.
+          Each song feels different when they remind me of you.
         </motion.p>
 
         {/* Spotify Embed with animation */}
@@ -66,7 +66,7 @@ const SecondScreen = forwardRef<HTMLElement>(function SecondScreen(_, ref) {
           transition={{ delay: 0.8, duration: 0.8 }}
           className="text-white/70 italic max-w-lg"
         >
-          "Music sounds better with you" isn't just a song title, it's the truth
+          Play on shuffle. Think of Me
           🎧
         </motion.p>
       </motion.div>

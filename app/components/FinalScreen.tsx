@@ -159,11 +159,11 @@ const FinalScreen = forwardRef<HTMLElement>(function FinalScreen(_, ref) {
           className="text-center mb-12"
         >
           <h2 className="text-4xl md:text-6xl font-bold text-red-600 mb-4">
-            I Have Gifts For You! 🎁
+            What's valentine without some gifts 😁
           </h2>
-          <p className="text-xl text-gray-700">
+          {/* <p className="text-xl text-gray-700">
             Click on any gift to see what's inside...
-          </p>
+          </p> */}
         </motion.div>
 
         {/* Gift Grid */}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, forwardRef, useCallback } from "react";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
@@ -23,33 +22,33 @@ I hope this letter makes you smile, just like you make me smile every day. 💖
 You're my favorite thought, my safe place, my joy.
 I just wanted to say… I really love you. 🌹`;
 
-  // Memoize the animation setup
   const setupAnimation = useCallback(() => {
     if (!textRef.current) return;
 
-    // Prepare typewriter text, keeping spaces
+    // Split by line first, then by WORD — not character
+    // Each word becomes one span so it never breaks mid-word
     const lines = messageText.split("\n");
     textRef.current.innerHTML = lines
       .map((line) => {
-        if (line.trim() === "") return "<br/>";
-        return Array.from(line)
-          .map((char) =>
-            char === " "
-              ? `<span class="char opacity-0 inline-block">&nbsp;</span>`
-              : `<span class="char opacity-0 inline-block">${char}</span>`,
+        if (line.trim() === "") return `<span class="block h-4"></span>`;
+        const words = line.split(" ");
+        return `<span class="block">${words
+          .map(
+            (word) =>
+              `<span class="word opacity-0 inline-block mr-[0.3em]">${word}</span>`,
           )
-          .join("");
+          .join("")}</span>`;
       })
-      .join("<br/>");
+      .join("");
 
-    const chars = textRef.current.querySelectorAll(".char");
-    if (!chars.length) return;
+    const words = textRef.current.querySelectorAll(".word");
+    if (!words.length) return;
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: envelopeRef.current,
         start: "top 70%",
-        once: true, // Only trigger once for better performance
+        once: true,
       },
     });
 
@@ -82,26 +81,28 @@ I just wanted to say… I really love you. 🌹`;
         { y: -180, opacity: 1, duration: 1.2, ease: "power3.out" },
         "-=0.5",
       )
-      // Letter settles above envelope
       .to(letterRef.current, {
         y: -10,
         duration: 1,
         ease: "power2.inOut",
         delay: 0.5,
       })
-      // Typewriter animation
+      // Animate word by word — smooth and readable
       .to(
-        chars,
-        { opacity: 1, y: 0, duration: 0.05, stagger: 0.03, ease: "none" },
+        words,
+        {
+          opacity: 1,
+          duration: 0.01,
+          stagger: 0.08, // slight pause between words
+          ease: "none",
+        },
         "-=0.5",
       )
-      // Close flap
       .to(flapRef.current, {
         rotateX: 0,
         duration: 0.8,
         ease: "power2.inOut",
       })
-      // Floating animation after typing
       .call(() => {
         gsap.to(letterRef.current, {
           y: "-=10",
@@ -124,11 +125,11 @@ I just wanted to say… I really love you. 🌹`;
   return (
     <section
       ref={ref}
-      className="relative flex items-center justify-center min-h-screen bg-linear-to-b from-gray-600 via-gray-500 to-gray-400 overflow-hidden px-5"
+      className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-600 via-gray-500 to-gray-400 overflow-hidden px-5"
     >
       {/* Envelope */}
       <div
-        className="relative w-full max-w-130 h-80"
+        className="relative w-full max-w-[380px] h-80"
         ref={envelopeRef}
         style={{ perspective: 1200 }}
       >
@@ -139,7 +140,7 @@ I just wanted to say… I really love you. 🌹`;
             style={{ clipPath: "polygon(0 0, 50% 100%, 100% 0)" }}
           />
 
-          {/* Envelope seal/decoration */}
+          {/* Envelope seal */}
           <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-red-400 rounded-full opacity-30 flex items-center justify-center">
             <span className="text-white text-2xl">💕</span>
           </div>
@@ -149,12 +150,12 @@ I just wanted to say… I really love you. 🌹`;
       {/* Letter */}
       <div
         ref={letterRef}
-        className="absolute mx-5 max-w-125.5 min-h-100 max-h-300 bg-red-100 rounded-lg p-6 shadow-2xl opacity-0 z-20 border-2 border-red-200"
+        className="absolute mx-10 w-full max-w-[360px]  min-h-[300px] max-h-[1200px] bg-red-100 rounded-lg p-6 shadow-2xl opacity-0 z-20 border-2 border-red-200"
         style={{ bottom: "calc(50% - 180px)" }}
       >
         <p
           ref={textRef}
-          className="text-gray-900 font-[Gloria_Hallelujah] text-base md:text-lg leading-relaxed whitespace-pre-wrap"
+          className="text-gray-900 font-[Gloria_Hallelujah] text-base md:text-lg leading-relaxed"
         />
       </div>
     </section>

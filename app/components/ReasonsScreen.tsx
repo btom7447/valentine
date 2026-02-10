@@ -209,7 +209,7 @@ const ReasonsScreen = forwardRef<HTMLElement>(function ReasonsScreen(_, ref) {
           className="mt-16 text-center"
         >
           <p className="text-2xl text-red-600 font-bold">
-            Each reason is just a glimpse of why you're so special to me 🌹
+            And you wonder why I love you🌹
           </p>
         </motion.div>
       </div>
