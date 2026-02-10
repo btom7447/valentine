@@ -10,6 +10,7 @@ import MessageScreen from "./components/MessageScreen";
 import MemoryScreen from "./components/MemoryScreen";
 import CountdownScreen from "./components/CountdownScreen";
 import FinalScreen from "./components/FinalScreen";
+import ValentineFlowerScreen from "./components/ValentineFlowerScreen";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -20,6 +21,7 @@ export default function Home() {
   const memoryScreenRef = useRef<HTMLElement | null>(null);
   const countdownScreenRef = useRef<HTMLElement | null>(null);
   const finalScreenRef = useRef<HTMLElement | null>(null);
+
 
   const handleYesClick = () => {
     if (!secondScreenRef.current) return;
@@ -41,6 +43,7 @@ export default function Home() {
       <MemoryScreen ref={memoryScreenRef} />
       <CountdownScreen ref={countdownScreenRef} />
       <FinalScreen ref={finalScreenRef} />
+      <ValentineFlowerScreen />
     </div>
   );
 }

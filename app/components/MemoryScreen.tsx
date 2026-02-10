@@ -261,7 +261,7 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
           className="mt-8 text-center z-10"
         >
           <p className="text-xl text-red-500 font-semibold">
-            And so many more to come... 💕
+            I never want to stop making memories with you 💕
           </p>
           <p className="text-sm text-gray-600 mt-2">
             Click any photo to see it up close
