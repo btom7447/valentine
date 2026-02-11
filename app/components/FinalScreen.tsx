@@ -45,7 +45,7 @@ const gifts: Gift[] = [
     title: "Tour of Uyo",
     emoji: "🚘",
     content:
-      "A full tour of Uyo with me driving and you riding shotgun — stops, laughs, and memories included.",
+      "A full tour of Uyo with me — stops, laughs, and memories included.",
     color: "from-pink-500 to-rose-600",
     ribbonColor: "bg-rose-700",
   },
