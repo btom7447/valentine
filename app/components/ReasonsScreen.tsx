@@ -54,7 +54,7 @@ const ReasonsScreen = forwardRef<HTMLElement>(function ReasonsScreen(_, ref) {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-6xl font-bold text-red-600 mb-4">
-            50 Reasons Why I Love You 💖
+            20 Reasons Why I Love You 💖
           </h2>
           <p className="text-xl text-gray-700 mb-6">
             (Though I could list a million more...)
