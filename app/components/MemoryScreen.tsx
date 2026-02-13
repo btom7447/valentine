@@ -193,7 +193,7 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
           ref={titleRef}
           className="text-4xl md:text-6xl font-bold text-center text-red-600 mb-12 z-10"
         >
-          Our Beautiful Moments 💖
+          My Favorite View 💖
         </h2>
 
         {/* Scattered Polaroids Container */}
