@@ -207,7 +207,7 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
             return (
               <div
                 key={idx}
-                className="memory-card absolute w-30 md:w-50 bg-white shadow-xl rounded-lg cursor-pointer hover:shadow-2xl transition-shadow"
+                className="memory-card absolute w-30 md:w-50 bg-white shadow-xl rounded-lg cursor-pointer hover:shadow-2xl p-1 transition-shadow"
                 style={{
                   left: `${pos.left}%`,
                   top: `${pos.top}%`,
@@ -228,9 +228,7 @@ const MemoryScreen = forwardRef<HTMLElement, MemoryScreenProps>(
                 </div>
 
                 {/* Polaroid date/caption */}
-                <div className="mt-2 md:mt-3 text-center text-xs md:text-sm text-gray-700 font-mono">
-                  {photo.date ??
-                    `2025-01-${(idx + 1).toString().padStart(2, "0")}`}
+                <div className="mt-2 md:mt-3 text-center text-xs md:text-sm text-gray-700 font-mono py-1">
                 </div>
 
                 {/* Heart decoration (only show when not active) */}

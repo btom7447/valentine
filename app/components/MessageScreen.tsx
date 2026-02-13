@@ -12,15 +12,8 @@ const MessageScreen = forwardRef<HTMLElement>(function MessageScreen(_, ref) {
   const letterRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
 
-  const messageText = `Ima,
-
-I love the way your smile brightens my day.
-Even your little quirks make me fall for you more.
-I love laughing with you, talking with you, just being with you.
-Every moment with you feels like my favorite song.
-I hope this letter makes you smile, just like you make me smile every day. 💖
-You're my favorite thought, my safe place, my joy.
-I just wanted to say… I really love you. 🌹`;
+  const messageText = `Seka,
+I love everything about you from your smile to your hair and  everything about you . You really don’t know how much you make me happy and how much you in my life has made a difference. Just know I’ll always love you and be here for you my little pookiee❤️`;
 
   const setupAnimation = useCallback(() => {
     if (!textRef.current) return;

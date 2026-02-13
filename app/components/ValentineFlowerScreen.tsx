@@ -68,7 +68,7 @@ export default function ValentineFlowerScreen() {
               animate={inView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
               transition={{ delay: 0.9, duration: 0.8 }}
             >
-              Ima
+              Seka
             </motion.p>
 
             {/* Divider */}

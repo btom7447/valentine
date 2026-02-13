@@ -48,7 +48,7 @@ const SecondScreen = forwardRef<HTMLElement>(function SecondScreen(_, ref) {
           onMouseLeave={() => setIsPlaying(false)}
         >
           <iframe
-            src="https://open.spotify.com/embed/playlist/6e7XWGv1HiNKjhzYWrkd2M?utm_source=generator&theme=0"
+            src="https://open.spotify.com/embed/playlist/2HE6fxQRB7fcTxIvbkMtTq?utm_source=generator&theme=0"
             width="100%"
             height="352"
             style={{ borderRadius: "12px" }}
@@ -66,8 +66,7 @@ const SecondScreen = forwardRef<HTMLElement>(function SecondScreen(_, ref) {
           transition={{ delay: 0.8, duration: 0.8 }}
           className="text-white/70 italic max-w-lg"
         >
-          Play on shuffle. Think of Me
-          🎧
+          Play on shuffle. Think of Me 🎧
         </motion.p>
       </motion.div>
 

@@ -51,7 +51,7 @@ export default function FirstScreen({ onYesClick }: FirstScreenProps) {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
 
-  const fullText = "Ima, Will you be my Valentine? 💖";
+  const fullText = "Seka, Will you be my Valentine? 💖";
 
   // Memoized click handler
   const handleNoClick = useCallback(() => {

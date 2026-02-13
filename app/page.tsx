@@ -20,8 +20,6 @@ export default function Home() {
   const messageScreenRef = useRef<HTMLElement | null>(null);
   const memoryScreenRef = useRef<HTMLElement | null>(null);
   const countdownScreenRef = useRef<HTMLElement | null>(null);
-  const finalScreenRef = useRef<HTMLElement | null>(null);
-
 
   const handleYesClick = () => {
     if (!secondScreenRef.current) return;
@@ -42,7 +40,6 @@ export default function Home() {
       <MessageScreen ref={messageScreenRef} />
       <MemoryScreen ref={memoryScreenRef} />
       <CountdownScreen ref={countdownScreenRef} />
-      <FinalScreen ref={finalScreenRef} />
       <ValentineFlowerScreen />
     </div>
   );
