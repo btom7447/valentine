@@ -39,7 +39,7 @@ export default function Home() {
       <ReasonsScreen ref={reasonsScreenRef} />
       <MessageScreen ref={messageScreenRef} />
       <MemoryScreen ref={memoryScreenRef} />
-      <CountdownScreen ref={countdownScreenRef} />
+      {/* <CountdownScreen ref={countdownScreenRef} /> */}
       <ValentineFlowerScreen />
     </div>
   );
